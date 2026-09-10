@@ -24,7 +24,11 @@ def _iter_images(container):
 
 
 def extract_images(pdf_path: str, out_dir: str) -> dict:
-    """Return {page_index: [{'bbox': (x0, top, x1, bottom), 'path': str}, ...]}."""
+    """Return {page_index: [{'bbox': (x0, top, x1, bottom), 'path': str}, ...]}.
+
+    `path` is the image filename relative to `out_dir`, which is also where the
+    Markdown file is written, so the emitted link resolves from the .md file.
+    """
     results: dict = defaultdict(list)
     os.makedirs(out_dir, exist_ok=True)
     writer = ImageWriter(out_dir)
@@ -51,7 +55,7 @@ def extract_images(pdf_path: str, out_dir: str) -> dict:
                         float(x1),
                         page_height - float(y0),
                     ),
-                    "path": os.path.join(out_dir, name),
+                    "path": name,
                 }
             )
     return results

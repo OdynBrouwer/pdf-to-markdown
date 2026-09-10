@@ -24,7 +24,7 @@ uv sync
 
 ```bash
 uv run pdf2md --pdf_path paper.pdf --out out/
-# → writes out/paper.md
+# → writes out/paper.md; extracted images land in out/ and are linked relative to the .md
 ```
 
 ## Features
