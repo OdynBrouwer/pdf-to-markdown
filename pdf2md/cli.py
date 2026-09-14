@@ -76,7 +76,10 @@ def main(argv=None) -> int:
     parser.add_argument(
         "--pdf_path",
         required=True,
-        help="Input PDF, or a folder: every *.pdf in it is converted one by one",
+        help=(
+            "Input PDF, or a folder: every *.pdf in it is converted one by one, "
+            "subfolders included"
+        ),
     )
     parser.add_argument(
         "--out",
@@ -100,13 +103,29 @@ def main(argv=None) -> int:
         default=None,
         help="Never draw a progress bar (the default when stderr is redirected).",
     )
+    parser.add_argument(
+        "--recursive",
+        dest="recursive",
+        action="store_true",
+        default=None,
+        help="Also convert PDFs in subfolders (the default for a folder input).",
+    )
+    parser.add_argument(
+        "--no-recursive",
+        dest="recursive",
+        action="store_false",
+        default=None,
+        help="Only convert the PDFs directly inside --pdf_path.",
+    )
     args = parser.parse_args(argv)
 
     target = Path(args.pdf_path)
     if target.is_dir():
+        # Subfolders are walked unless --no-recursive asks for the top level only.
+        walk = target.iterdir() if args.recursive is False else target.rglob("*")
         pdfs = sorted(
-            (p for p in target.iterdir() if p.is_file() and p.suffix.lower() == ".pdf"),
-            key=lambda p: p.name.lower(),
+            (p for p in walk if p.is_file() and p.suffix.lower() == ".pdf"),
+            key=lambda p: str(p).lower(),
         )
         if not pdfs:
             print(f"error: no PDF files in {target}", file=sys.stderr)
@@ -135,7 +154,7 @@ def main(argv=None) -> int:
                 # land on the same filename.
                 file_config["OUTPUT_DIR"] = str(Path(args.out) / pdf.stem)
             if batch:
-                progress.status(f"{index}/{len(pdfs)}: {pdf.name}")
+                progress.status(f"{index}/{len(pdfs)}: {pdf.relative_to(target)}")
             extractor = PdfToMarkdown(file_config, progress=progress)
             try:
                 extractor.extract(str(pdf))

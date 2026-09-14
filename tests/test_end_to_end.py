@@ -111,3 +111,26 @@ def test_cli_folder_of_pdfs_respects_out_dir(tmp_path):
 def test_cli_folder_without_pdfs_is_an_error(tmp_path):
     (tmp_path / "notes.txt").write_text("not a pdf")
     assert cli_main(["--pdf_path", str(tmp_path), "--no-progress"]) == 2
+
+
+def test_cli_folder_walks_subfolders_by_default(tmp_path):
+    sub = tmp_path / "sub"
+    sub.mkdir()
+    (tmp_path / "one.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+    (sub / "two.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+
+    assert cli_main(["--pdf_path", str(tmp_path), "--no-progress"]) == 0
+    assert (tmp_path / "one" / "one.md").is_file()
+    assert (sub / "two" / "two.md").is_file()
+
+
+def test_cli_no_recursive_stays_on_the_top_level(tmp_path):
+    sub = tmp_path / "sub"
+    sub.mkdir()
+    (tmp_path / "one.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+    (sub / "two.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+
+    args = ["--pdf_path", str(tmp_path), "--no-progress", "--no-recursive"]
+    assert cli_main(args) == 0
+    assert (tmp_path / "one" / "one.md").is_file()
+    assert not (sub / "two").exists()
