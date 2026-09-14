@@ -1,6 +1,7 @@
 # PDF to Markdown
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/OdynBrouwer/pdf-to-markdown/actions/workflows/ci.yml/badge.svg)](https://github.com/OdynBrouwer/pdf-to-markdown/actions/workflows/ci.yml)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org)
 ![Dependencies: MIT-only core](https://img.shields.io/badge/dependencies-MIT--only%20core-brightgreen.svg)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
