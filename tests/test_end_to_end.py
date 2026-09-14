@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -59,3 +60,25 @@ def test_extract_writes_file(tmp_path):
     assert out.is_file()
     assert out.read_text(encoding="utf-8").strip() == full.strip()
     assert len(pages) >= 1
+
+
+def test_output_defaults_to_a_folder_named_after_the_pdf(tmp_path):
+    """Without OUTPUT_DIR: <pdf_dir>/<name>/<name>.md, never the cwd."""
+    pdf = tmp_path / "copy.pdf"
+    pdf.write_bytes(Path(_fx("basic.pdf")).read_bytes())
+
+    extractor = PdfToMarkdown({"extract_images": False})
+    assert Path(extractor.output_dir(str(pdf))) == tmp_path / "copy"
+    extractor.extract(str(pdf))
+    assert (tmp_path / "copy" / "copy.md").is_file()
+
+
+def test_explicit_output_dir_beats_the_pdf_folder(tmp_path):
+    out = tmp_path / "elsewhere"
+    pdf = tmp_path / "copy.pdf"
+    pdf.write_bytes(Path(_fx("basic.pdf")).read_bytes())
+
+    extractor = PdfToMarkdown({"OUTPUT_DIR": str(out), "extract_images": False})
+    assert Path(extractor.output_dir(str(pdf))) == out
+    extractor.extract(str(pdf))
+    assert (out / "copy.md").is_file()

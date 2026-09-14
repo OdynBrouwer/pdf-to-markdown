@@ -1,5 +1,8 @@
 # Output
-OUTPUT_DIR: outputs
+# Leeg laten = naast de PDF een map maken met de naam van de PDF, bijv.
+#   C:\docs\manual.pdf  ->  C:\docs\manual\manual.md  (+ de afbeeldingen)
+# Vul een pad in, of gebruik --out, om ergens anders naartoe te schrijven.
+OUTPUT_DIR: ""
 # Inserted between pages in the combined Markdown output ("" = just a blank line).
 PAGE_DELIMITER: ""
 

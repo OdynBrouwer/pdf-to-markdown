@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 outputs/
+out/
 *.egg-info/
 .pytest_cache/
 # Local scratch
