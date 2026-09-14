@@ -67,7 +67,10 @@ def _route_logging_through_progress(enabled: bool):
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         prog="pdf2md",
-        description="Convert a PDF file to Markdown (MIT-only, no AGPL/ML deps).",
+        description=(
+            "Convert a PDF - or every PDF in a folder - to Markdown "
+            "(MIT-only, no AGPL/ML deps)."
+        ),
         epilog=(
             "Progress bars need tqdm (`uv sync --extra progress`) and are only "
             "drawn when stderr is a terminal; use --progress to force one on."

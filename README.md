@@ -13,7 +13,9 @@
 links, and images - not just its raw text. It is built on the MIT-licensed
 [`pdfplumber`](https://github.com/jsvine/pdfplumber) / `pdfminer.six`, with no
 AGPL (`PyMuPDF`) and no heavy ML/OCR stack anywhere in the dependency tree.
-Install, import, and run it as **`pdf2md`**.
+Install, import, and run it as **`pdf2md`**. Point it at a single PDF or at a
+folder of them - it walks the whole tree and gives every document its own output
+folder.
 
 ## Install
 
@@ -37,6 +39,19 @@ A folder input gives every PDF its own folder (beside the PDF, or under
 filename. Subfolders are walked too; use `--no-recursive` for the top level only.
 A PDF that fails is reported and the rest continue; the run then exits with code 1.
 
+## Options
+
+| option | what it does |
+| --- | --- |
+| `--pdf_path PATH` | the PDF, or a folder whose PDFs (subfolders included) are all converted |
+| `--out DIR` | write somewhere else; with a folder of PDFs each document lands in `DIR/<name>/` |
+| `--no-recursive` | stay on the top level of `--pdf_path` (or force it with `--recursive`) |
+| `--config FILE` | YAML config (default: `config/config.yaml`) |
+| `--progress` / `--no-progress` | force the progress output on / keep the run completely silent |
+
+Exit codes: `0` all good, `1` one or more PDFs failed (the rest were converted),
+`2` nothing to do (path not found, or a folder without PDFs in it).
+
 ## Features
 
 - **Headings** from document-wide font-size statistics
@@ -47,6 +62,8 @@ A PDF that fails is reported and the rest continue; the run then exits with code
 - **Math → LaTeX** - inline `$…$` and display `$$…$$` (heuristic)
 - **Layout** - multi-column reading order, rotated/landscape pages, header/footer stripping
 - **Footnotes**, **table of contents**, **images**, and **CJK / Unicode** text
+- **Batch** - hand it a folder and every `*.pdf` in it (subfolders too) is converted in one run
+- **Progress** - a bar per pipeline step, so a long document never looks frozen (see below)
 
 Behaviour is tunable in [`config/config.yaml`](config/config.yaml).
 
