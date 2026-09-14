@@ -1849,6 +1849,9 @@ dependencies = [
 math = [
     { name = "pix2tex" },
 ]
+progress = [
+    { name = "tqdm" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -1856,6 +1859,7 @@ dev = [
     { name = "pytest", version = "9.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "reportlab" },
     { name = "ruff" },
+    { name = "tqdm" },
 ]
 
 [package.metadata]
@@ -1863,13 +1867,16 @@ requires-dist = [
     { name = "pdfplumber", specifier = ">=0.11" },
     { name = "pix2tex", marker = "extra == 'math'", specifier = ">=0.1.2" },
     { name = "pyyaml", specifier = ">=6.0" },
+    { name = "tqdm", marker = "extra == 'progress'", specifier = ">=4.66" },
 ]
+provides-extras = ["math", "progress"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=7.0" },
     { name = "reportlab", specifier = ">=4.0" },
     { name = "ruff", specifier = ">=0.5" },
+    { name = "tqdm", specifier = ">=4.66" },
 ]
 
 [[package]]

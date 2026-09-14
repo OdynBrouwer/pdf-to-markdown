@@ -50,6 +50,36 @@ default install stays lean):
 uv sync --extra math
 ```
 
+## Optional: progress bar
+
+Every step of the pipeline reports itself, so a long conversion is never a black
+box. Steps that walk the pages get a bar; one-off steps print a `[pdf2md]` line:
+
+```text
+[pdf2md] features on: images, borderless tables, blockquotes, footnotes, bold headings
+extracting images: 100%|████████████| 1477/1477 [00:31<00:00, 47.5page/s]
+reading pages:     38%|███▍        |  561/1477 [00:24<00:39, 23.1page/s]
+analyzing layout: 100%|████████████| 1477/1477 [01:12<00:00, 20.4page/s]
+[pdf2md] measuring document
+[pdf2md] detecting headers/footers
+rendering pages:  100%|████████████| 1477/1477 [00:58<00:00, 25.3page/s]
+[pdf2md] writing markdown
+```
+
+It is opt-in because tqdm is dual-licensed MPL-2.0/MIT, and the core stays
+MIT-only; without it the CLI just runs quietly.
+
+```bash
+uv sync --extra progress
+uv run pdf2md --pdf_path paper.pdf                 # bar when stderr is a terminal
+uv run pdf2md --pdf_path paper.pdf --progress      # force on (logs, CI)
+uv run pdf2md --pdf_path paper.pdf --no-progress   # completely silent
+```
+
+Auto-detection can also be overridden with `PDF2MD_PROGRESS=1` /
+`PDF2MD_NO_PROGRESS=1`. Log records are routed through the bar, so a
+`--log-level DEBUG` run (`run_verbose.py`) stays readable.
+
 ## Limitations
 
 - **No OCR** - scanned / image-only pages yield embedded images only.
