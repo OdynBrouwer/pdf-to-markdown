@@ -1,0 +1,7 @@
+# Binary artefacts must stay byte-exact. Git for Windows ships with
+# core.autocrlf=true by default, which makes Git treat these PDFs as text and
+# expand LF to CRLF on checkout. The stored blobs are fine, but the extra bytes
+# shift every internal xref offset, so a fresh clone cannot open the file
+# ("Unexpected EOF") even though it works in the tree that generated it.
+*.pdf binary
+*.png binary
