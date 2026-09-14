@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org)
-![Dependencies: MIT-only](https://img.shields.io/badge/dependencies-MIT--only-brightgreen.svg)
+![Dependencies: MIT-only core](https://img.shields.io/badge/dependencies-MIT--only%20core-brightgreen.svg)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
@@ -90,4 +90,6 @@ Auto-detection can also be overridden with `PDF2MD_PROGRESS=1` /
 
 ## License
 
-MIT - see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE). This project is based on
+[iamarunbrahma/pdf-to-markdown](https://github.com/iamarunbrahma/pdf-to-markdown)
+(MIT); the original copyright notice is kept in `LICENSE`.
