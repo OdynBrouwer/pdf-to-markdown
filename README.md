@@ -26,8 +26,14 @@ uv sync
 uv run pdf2md --pdf_path paper.pdf
 # → writes paper/paper.md beside paper.pdf, with the extracted images in that
 #   same folder (linked relative to the .md)
+uv run pdf2md --pdf_path manuals/               # every *.pdf in that folder, one by one
 uv run pdf2md --pdf_path paper.pdf --out out/   # or write somewhere else
 ```
+
+A folder input gives every PDF its own folder (beside the PDF, or under
+`--out/<name>/`), so images from different documents can never land on the same
+filename. A PDF that fails is reported and the rest continue; the run then exits
+with code 1.
 
 ## Features
 

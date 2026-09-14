@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from pdf2md import PdfToMarkdown, convert_pdf
+from pdf2md.cli import main as cli_main
 
 FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
 
@@ -82,3 +83,31 @@ def test_explicit_output_dir_beats_the_pdf_folder(tmp_path):
     assert Path(extractor.output_dir(str(pdf))) == out
     extractor.extract(str(pdf))
     assert (out / "copy.md").is_file()
+
+
+def test_cli_converts_every_pdf_in_a_folder(tmp_path):
+    for name in ("one", "two"):
+        (tmp_path / f"{name}.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+    (tmp_path / "notes.txt").write_text("not a pdf")
+
+    assert cli_main(["--pdf_path", str(tmp_path), "--no-progress"]) == 0
+    # Each document gets its own folder, next to its source PDF.
+    assert (tmp_path / "one" / "one.md").is_file()
+    assert (tmp_path / "two" / "two.md").is_file()
+
+
+def test_cli_folder_of_pdfs_respects_out_dir(tmp_path):
+    for name in ("one", "two"):
+        (tmp_path / f"{name}.pdf").write_bytes(Path(_fx("basic.pdf")).read_bytes())
+    out = tmp_path / "converted"
+
+    args = ["--pdf_path", str(tmp_path), "--out", str(out), "--no-progress"]
+    assert cli_main(args) == 0
+    # ... still one folder per document, so images cannot collide.
+    assert (out / "one" / "one.md").is_file()
+    assert (out / "two" / "two.md").is_file()
+
+
+def test_cli_folder_without_pdfs_is_an_error(tmp_path):
+    (tmp_path / "notes.txt").write_text("not a pdf")
+    assert cli_main(["--pdf_path", str(tmp_path), "--no-progress"]) == 2
